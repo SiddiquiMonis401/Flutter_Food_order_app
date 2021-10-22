@@ -1,4 +1,4 @@
-import 'package:first_flutter_app/Cubit/cubit/cubit/cartitemscubit_cubit.dart';
+import 'package:first_flutter_app/Cubit/cubit/Cartcubit/cartitemscubit_cubit.dart';
 import 'package:first_flutter_app/Schemas/FoodCartData.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
