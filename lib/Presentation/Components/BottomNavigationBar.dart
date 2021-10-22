@@ -8,6 +8,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 class AppBottomNavigationBar extends StatelessWidget {
   void onTapNavBarItem(int navItemTapped, BuildContext context) {
     BlocProvider.of<BottomnavigationcubitCubit>(context).changeBottomNavigationTab(navItemTapped);
+    // just a comment
     switch (navItemTapped) {
       case 0:
         Navigator.push(
