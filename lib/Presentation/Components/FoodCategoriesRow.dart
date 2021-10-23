@@ -4,8 +4,10 @@ import 'package:flutter/material.dart';
 
 class FoodCategories extends StatelessWidget {
   final List<FoodTabSchema> foodsList;
+  final Function onTabTap;
 
-  const FoodCategories({Key key, this.foodsList}) : super(key: key);
+  const FoodCategories({Key key, this.foodsList, this.onTabTap}) : super(key: key);
+
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +19,7 @@ class FoodCategories extends StatelessWidget {
             for (FoodTabSchema foodData in foodsList)
               FoodCategoryTab(
                 foodTabInfo: foodData,
+                onTabTap: onTabTap,
               )
           ],
         ));

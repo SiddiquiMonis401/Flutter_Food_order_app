@@ -6,7 +6,8 @@ class FoodCardListItem {
   final double foodPrice;
   final String imagePath;
   final double rating;
+  final String foodType;
 
-  FoodCardListItem({this.foodName, this.foodPrice, this.imagePath, this.rating});
+  FoodCardListItem({this.foodName, this.foodPrice, this.imagePath, this.rating, this.foodType});
 
 }

@@ -25,19 +25,29 @@ class CartHelper {
 
   static double calculateCartItemPrice(List<FoodCartData> cartItems) {
     double sum = 0;
-    cartItems.forEach((element) { 
+    cartItems.forEach((element) {
       sum += element.foodPrice * element.itemsInCart;
     });
     return sum;
   }
 
-  static List<FoodCartData> deleteItemFromCartList(List<FoodCartData> cartItems, FoodCartData itemToDelete) {
+  static List<FoodCartData> deleteItemFromCartList(
+      List<FoodCartData> cartItems, FoodCartData itemToDelete) {
     List<FoodCartData> updatedListAfterDeletion = [];
-    cartItems.forEach((element) { 
-      if(element.foodName != itemToDelete.foodName) {
+    cartItems.forEach((element) {
+      if (element.foodName != itemToDelete.foodName) {
         updatedListAfterDeletion.add(element);
       }
     });
     return updatedListAfterDeletion;
+  }
+
+  static int getCurrentItemCount(
+      String foodName, List<FoodCartData> cartItems) {
+    int currentItemCount = 0;
+    cartItems.forEach((element) {
+      if (element.foodName == foodName) currentItemCount = element.itemsInCart;
+    });
+    return currentItemCount;
   }
 }

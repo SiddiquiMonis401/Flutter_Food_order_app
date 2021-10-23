@@ -1,6 +1,30 @@
+import 'package:first_flutter_app/Cubit/Helpers/CartHelper.dart';
+import 'package:first_flutter_app/Cubit/cubit/Cartcubit/cartitemscubit_cubit.dart';
+import 'package:first_flutter_app/Schemas/FoodCardList.dart';
+import 'package:first_flutter_app/Schemas/FoodCartData.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class FoodDetailPage extends StatelessWidget {
+  final FoodCardListItem foodItemDetails;
+
+  const FoodDetailPage({Key key, this.foodItemDetails}) : super(key: key);
+
+  void onAddItemToCart(BuildContext context, FoodCartData itemToAdd) {
+    BlocProvider.of<CartitemscubitCubit>(context).addItemToCart(itemToAdd);
+  }
+
+  void onRemoveItemFromCart(BuildContext context, FoodCartData itemToRemove,
+      {isDeleteAction = true}) {
+    if (isDeleteAction) {
+      BlocProvider.of<CartitemscubitCubit>(context)
+          .deleteItemFromList(itemToRemove);
+    } else {
+      BlocProvider.of<CartitemscubitCubit>(context)
+          .removeItemToCart(itemToRemove);
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -8,10 +32,6 @@ class FoodDetailPage extends StatelessWidget {
       appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.yellow[700],
-        leading: Icon(
-          Icons.arrow_back_ios,
-          color: Colors.black,
-        ),
         actions: [
           Padding(
             padding: EdgeInsets.only(right: 10),
@@ -37,7 +57,7 @@ class FoodDetailPage extends StatelessWidget {
                     height: 200,
                     width: 200,
                     child: Image.asset(
-                      'images/pizza.jpeg',
+                      foodItemDetails.imagePath,
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -57,92 +77,140 @@ class FoodDetailPage extends StatelessWidget {
                       EdgeInsets.only(left: 0, right: 0, top: 10, bottom: 10),
                   width: MediaQuery.of(context).size.width,
                   color: Colors.white,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      Text(
-                        'Pizza',
-                        style: TextStyle(
-                            fontSize: 24,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Pacifico'),
-                      ),
-                      Padding(
-                        padding: EdgeInsets.all(10),
-                        child: Text(
-                          'You might want to create a list that scrolls horizontally rather than vertically. The ListView widget supports horizontal lists. Use the standard ListView constructor, passing in a horizontal scrollDirection, which overrides the default vertical direction.',
-                          textAlign: TextAlign.center,
+                  child: BlocBuilder<CartitemscubitCubit, CartitemscubitState>(
+                      builder: (context, state) {
+                    int currentItemCount = CartHelper.getCurrentItemCount(
+                        foodItemDetails.foodName, state.cartItems);
+                    bool isItemAddedToCart = currentItemCount > 0;
+                    return Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Text(
+                          foodItemDetails.foodName.toString(),
                           style: TextStyle(
-                            fontSize: 10,
+                              fontSize: 24,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Pacifico'),
+                        ),
+                        Padding(
+                          padding: EdgeInsets.all(10),
+                          child: Text(
+                            'You might want to create a list that scrolls horizontally rather than vertically. The ListView widget supports horizontal lists. Use the standard ListView constructor, passing in a horizontal scrollDirection, which overrides the default vertical direction.',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
+                              fontSize: 10,
+                            ),
                           ),
                         ),
-                      ),
-                      Container(
-                        height: 40,
-                        width: MediaQuery.of(context).size.width,
-                        color: Colors.blueGrey[50],
-                        child: Align(
-                            alignment: Alignment.center,
-                            child: Text(
-                              'Choose Amount',
-                              style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18,
+                        Container(
+                          height: 40,
+                          width: MediaQuery.of(context).size.width,
+                          color: Colors.blueGrey[50],
+                          child: Align(
+                              alignment: Alignment.center,
+                              child: Text(
+                                'Choose Amount',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              )),
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            if (isItemAddedToCart)
+                              InkWell(
+                                onTap: () {
+                                  onAddItemToCart(
+                                      context,
+                                      FoodCartData(foodItemDetails.foodName,
+                                          foodItemDetails.foodPrice, 1));
+                                },
+                                child: Icon(
+                                  Icons.add_circle_outline,
+                                  color: Colors.blueGrey,
+                                ),
                               ),
-                            )),
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Icon(
-                            Icons.add_circle_outline,
-                            color: Colors.blueGrey,
-                          ),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Text('1'),
-                          SizedBox(
-                            width: 10,
-                          ),
-                          Icon(
-                            Icons.remove_circle_outline,
-                            color: Colors.blueGrey,
-                          ),
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Padding(
-                            padding: EdgeInsets.only(left: 20),
-                            child: Text(
-                              '\$ 8.0',
-                              style: TextStyle(
-                                  fontWeight: FontWeight.bold, fontSize: 14),
+                            SizedBox(
+                              width: 10,
                             ),
-                          ),
-                          Padding(
-                            padding: EdgeInsets.only(bottom: 10),
-                            child: ClipRRect(
-                              borderRadius: BorderRadius.only(
-                                  topLeft: Radius.circular(20),
-                                  bottomLeft: Radius.circular(20)),
-                              child: Container(
-                                  height: 40,
-                                  width: MediaQuery.of(context).size.width / 3,
-                                  color: Colors.yellow[700],
-                                  child: Align(
-                                    alignment: Alignment.center,
-                                    child: Text('Add To Cart'),
+                            if (!isItemAddedToCart)
+                              Text('Click Add To Cart below'),
+                            if (currentItemCount > 0)
+                              Text(currentItemCount.toString()),
+                            SizedBox(
+                              width: 10,
+                            ),
+                            if (isItemAddedToCart)
+                              InkWell(
+                                onTap: () {
+                                  onRemoveItemFromCart(
+                                      context,
+                                      FoodCartData(foodItemDetails.foodName,
+                                          foodItemDetails.foodPrice, 1),
+                                      isDeleteAction: false);
+                                },
+                                child: Icon(
+                                  Icons.remove_circle_outline,
+                                  color: Colors.blueGrey,
+                                ),
+                              ),
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.only(left: 20),
+                              child: Text(
+                                '\$ ' + foodItemDetails.foodPrice.toString(),
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 14),
+                              ),
+                            ),
+                            Padding(
+                              padding: EdgeInsets.only(bottom: 10),
+                              child: ClipRRect(
+                                  borderRadius: BorderRadius.only(
+                                      topLeft: Radius.circular(20),
+                                      bottomLeft: Radius.circular(20)),
+                                  child: InkWell(
+                                    onTap: () {
+                                      !isItemAddedToCart
+                                          ? onAddItemToCart(
+                                              context,
+                                              FoodCartData(
+                                                  foodItemDetails.foodName,
+                                                  foodItemDetails.foodPrice,
+                                                  1))
+                                          : onRemoveItemFromCart(
+                                              context,
+                                              FoodCartData(
+                                                  foodItemDetails.foodName,
+                                                  foodItemDetails.foodPrice,
+                                                  currentItemCount));
+                                    },
+                                    child: Container(
+                                        height: 40,
+                                        width:
+                                            MediaQuery.of(context).size.width /
+                                                3,
+                                        color: Colors.yellow[700],
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Text(currentItemCount > 0
+                                              ? 'Remove from Cart'
+                                              : 'Add to Cart'),
+                                        )),
                                   )),
-                            ),
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
+                            )
+                          ],
+                        ),
+                      ],
+                    );
+                  }),
                 ),
               )),
             ],

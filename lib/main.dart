@@ -1,5 +1,6 @@
 import 'package:first_flutter_app/Cubit/cubit/BottomNavigationCubit/bottomnavigationcubit_cubit.dart';
 import 'package:first_flutter_app/Presentation/Screens/CartDetails.dart';
+import 'package:first_flutter_app/Presentation/Screens/FoodsList.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           primarySwatch: Colors.blue,
         ),
-        home: CartDetails(),
+        home: FoodList(),
       ),
     );
   }
