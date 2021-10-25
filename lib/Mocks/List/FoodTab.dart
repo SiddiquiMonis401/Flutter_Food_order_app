@@ -11,7 +11,7 @@ List<FoodTabSchema> foodTabsData = [
       startingPrice: 'Starting at \$40',
       imagePath: 'images/pizza.jpeg'),
   FoodTabSchema(
-      foodName: 'Singaporean',
+      foodName: 'Singaporean Riceeeee',
       startingPrice: 'Starting at \$40',
       imagePath: 'images/pizza.jpeg'),
   FoodTabSchema(

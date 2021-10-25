@@ -9,35 +9,37 @@ import 'package:first_flutter_app/Schemas/FoodCardList.dart';
 import 'package:first_flutter_app/Schemas/FoodTabSchema.dart';
 import 'package:flutter/material.dart';
 
-
 class FoodList extends StatefulWidget {
   @override
   _FoodListState createState() => _FoodListState();
 }
 
 class _FoodListState extends State<FoodList> {
-  String CurrentSelectedFoodTab = 'Pizza';
+  String currentSelectedFoodTab = 'Pizza';
 
   void onChangeFoodTab(String newTab) {
     setState(() {
-      CurrentSelectedFoodTab = newTab;      
+      currentSelectedFoodTab = newTab;
     });
   }
 
-  List<FoodCardListItem> getFoodByType(String foodType, List<FoodCardListItem> foodList) {
+  List<FoodCardListItem> getFoodByType(
+      String foodType, List<FoodCardListItem> foodList) {
     List<FoodCardListItem> copyFoodList = [];
     foodList.forEach((element) {
-      if(element.foodType == foodType) {
+      if (element.foodType == foodType) {
         copyFoodList.add(element);
       }
     });
-    return copyFoodList; 
+    return copyFoodList;
   }
 
   @override
   Widget build(BuildContext context) {
-    List<FoodCardListItem> filteredFoodList = getFoodByType(CurrentSelectedFoodTab, foodList);
-    List<FoodCardListItem> filteredPopularFoodList = getFoodByType(CurrentSelectedFoodTab, popularFoodList);
+    List<FoodCardListItem> filteredFoodList =
+        getFoodByType(currentSelectedFoodTab, foodList);
+    List<FoodCardListItem> filteredPopularFoodList =
+        getFoodByType(currentSelectedFoodTab, popularFoodList);
     return Scaffold(
       appBar: AppBar(
         title: Center(
@@ -46,7 +48,14 @@ class _FoodListState extends State<FoodList> {
             style: TextStyle(color: Colors.black),
           ),
         ),
-        actions: [Padding(padding: EdgeInsets.all(10), child: CartIcon(iconColor: Colors.yellow[700], iconSize: 36.00,))],
+        actions: [
+          Padding(
+              padding: EdgeInsets.all(10),
+              child: CartIcon(
+                iconColor: Colors.yellow[700],
+                iconSize: 36.00,
+              ))
+        ],
         backgroundColor: Colors.white,
       ),
       body: ListView(
@@ -57,23 +66,27 @@ class _FoodListState extends State<FoodList> {
               child: FoodCategories(
                 foodsList: foodTabsData,
                 onTabTap: (String foodType) => onChangeFoodTab(foodType),
+                foodType: currentSelectedFoodTab,
               )),
           FoodGroupedTag(
             icon: Icons.local_offer,
             tagLabel: 'Trending deals',
             iconColor: Colors.yellow[700],
           ),
-          TrendingCurrentDayFoods(foodList: filteredFoodList,),
+          TrendingCurrentDayFoods(
+            foodList: filteredFoodList,
+          ),
           FoodGroupedTag(
             icon: Icons.stars,
             tagLabel: 'Popular Items',
             iconColor: Colors.yellow[700],
           ),
-          TrendingCurrentDayFoods(foodList: filteredPopularFoodList,),
+          TrendingCurrentDayFoods(
+            foodList: filteredPopularFoodList,
+          ),
         ],
       ),
       bottomNavigationBar: new AppBottomNavigationBar(),
     );
   }
 }
-

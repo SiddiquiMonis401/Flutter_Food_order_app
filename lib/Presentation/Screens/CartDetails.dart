@@ -4,6 +4,7 @@ import 'package:first_flutter_app/Presentation/Components/BottomNavigationBar.da
 import 'package:first_flutter_app/Presentation/Components/CartIemsList.dart';
 import 'package:first_flutter_app/Presentation/Components/CartItem.dart';
 import 'package:first_flutter_app/Presentation/Components/CartItemHeader.dart';
+import 'package:first_flutter_app/Presentation/Screens/Checkout.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -48,7 +49,7 @@ class CartDetails extends StatelessWidget {
                                       'Total',
                                       style: TextStyle(color: Colors.blueGrey),
                                     ),
-                                    Text(totalOfCart.toStringAsFixed(2),
+                                    Text('\$ ' + totalOfCart.toStringAsFixed(2),
                                         style: TextStyle(
                                             color: Colors.black, fontWeight: FontWeight.bold))
                                   ],
@@ -64,16 +65,23 @@ class CartDetails extends StatelessWidget {
                   child: ClipRRect(
                     borderRadius: BorderRadius.all(Radius.circular(20)),
                     child: InkWell(
-                        child: Container(
-                            width: MediaQuery.of(context).size.width / 2,
-                            height: 40,
-                            color: Colors.yellow[700],
-                            child: Center(
-                              child: Text(
-                                'Checkout',
-                                style: TextStyle(fontWeight: FontWeight.bold),
-                              ),
-                            ))),
+                        child: InkWell(
+                          onTap: () {
+                            Navigator.push(context, MaterialPageRoute(builder: (context) {
+                              return CheckoutPage();
+                            }));
+                          },
+                          child: Container(
+                              width: MediaQuery.of(context).size.width / 2,
+                              height: 40,
+                              color: Colors.yellow[700],
+                              child: Center(
+                                child: Text(
+                                  'Checkout',
+                                  style: TextStyle(fontWeight: FontWeight.bold),
+                                ),
+                              )),
+                        )),
                   ),
                 ),
               )

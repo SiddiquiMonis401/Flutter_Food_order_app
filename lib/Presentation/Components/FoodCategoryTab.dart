@@ -4,15 +4,22 @@ import 'package:flutter/material.dart';
 class FoodCategoryTab extends StatelessWidget {
   final FoodTabSchema foodTabInfo;
   final Function onTabTap;
-  FoodCategoryTab({this.foodTabInfo, this.onTabTap});
+  final String foodType;
+
+  FoodCategoryTab({this.foodTabInfo, this.onTabTap, this.foodType});
+
   @override
   Widget build(BuildContext context) {
+    bool isTabSelected = foodTabInfo.foodName == foodType;
     return InkWell(
         onTap: () => onTabTap(foodTabInfo.foodName),
         child: Card(
           color: Colors.white,
-          elevation: 2,
+          elevation: isTabSelected ? 6 : 2,
           child: Container(
+              decoration: BoxDecoration(
+                  border: Border.all(
+                      width: isTabSelected ? 4 : 0, color: Colors.yellow[700])),
               width: 160,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -30,21 +37,26 @@ class FoodCategoryTab extends StatelessWidget {
                           'images/pizza.jpeg',
                         )),
                       )),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        foodTabInfo.foodName,
-                        style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 14,
-                            fontFamily: 'Pacifico'),
-                      ),
-                      Text(
-                        foodTabInfo.startingPrice,
-                        style: TextStyle(fontSize: 10),
-                      )
-                    ],
+                    Flexible(
+                      flex: 1,
+                      child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          foodTabInfo.foodName,
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 14,
+                              fontFamily: 'Pacifico'
+                          ),
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                        Text(
+                          foodTabInfo.startingPrice,
+                          style: TextStyle(fontSize: 10),
+                        )
+                      ],
+                    ),
                   ),
                   SizedBox(
                     width: 10,

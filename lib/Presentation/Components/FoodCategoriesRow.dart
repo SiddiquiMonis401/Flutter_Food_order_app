@@ -5,8 +5,9 @@ import 'package:flutter/material.dart';
 class FoodCategories extends StatelessWidget {
   final List<FoodTabSchema> foodsList;
   final Function onTabTap;
+  final String foodType;
 
-  const FoodCategories({Key key, this.foodsList, this.onTabTap}) : super(key: key);
+  const FoodCategories({Key key, this.foodsList, this.onTabTap, this.foodType}) : super(key: key);
 
 
   @override
@@ -20,6 +21,7 @@ class FoodCategories extends StatelessWidget {
               FoodCategoryTab(
                 foodTabInfo: foodData,
                 onTabTap: onTabTap,
+                foodType: foodType,
               )
           ],
         ));
